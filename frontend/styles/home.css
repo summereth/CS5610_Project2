@@ -1,0 +1,62 @@
+/* Card Styles */
+.workout-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.workout-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-details {
+  display: none;
+}
+
+.card-details.show {
+  display: block;
+}
+
+.exercise-item {
+  border-left: 3px solid #0d6efd;
+  margin: 10px 0;
+  padding-left: 10px;
+}
+
+/* Footer styles */
+.footer {
+  background-color: #f8f9fa;
+  padding: 3rem 0;
+  margin-top: 4rem;
+  border-top: 1px solid #dee2e6;
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+}
+
+.footer-links li {
+  margin-bottom: 0.5rem;
+}
+
+.footer-links a {
+  color: #6c757d;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.footer-links a:hover {
+  color: #0d6efd;
+}
+
+.social-links a {
+  color: #6c757d;
+  margin-right: 1rem;
+  font-size: 1.25rem;
+  transition: color 0.2s;
+}
+
+.social-links a:hover {
+  color: #0d6efd;
+}
