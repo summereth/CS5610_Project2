@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Workout Plan - Fitness Master</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/create.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+      <div class="container">
+        <a class="navbar-brand d-flex align-items-center" href="/">
+          <i class="fas fa-dumbbell me-2"></i>
+          Fitness Master
+        </a>
+      </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container my-4">
+      <div class="col-12">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h2 class="card-title mb-4">Create New Workout Plan</h2>
+
+            <form id="create-plan-form">
+              <!-- Plan Name -->
+              <div class="mb-4">
+                <label for="plan-name" class="form-label">Plan Name</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="plan-name"
+                  required
+                  placeholder="Enter your plan name"
+                />
+              </div>
+
+              <!-- Selected Exercises -->
+              <div class="mb-4">
+                <h4>Exercises</h4>
+                <div id="selected-exercises-container">
+                  <!-- Selected exercises will be added here -->
+                </div>
+
+                <button
+                  type="button"
+                  class="btn btn-success mt-3"
+                  id="add-exercise-btn"
+                >
+                  <i class="fas fa-plus me-2"></i>Add an Exercise
+                </button>
+              </div>
+
+              <!-- Exercise Selection Area (Initially Hidden) -->
+              <div
+                id="exercise-selection-area"
+                class="exercise-selection-area mb-4"
+              >
+                <div class="card">
+                  <div class="card-body">
+                    <h5 class="card-title">Add New Exercise</h5>
+
+                    <!-- Step 1: Muscle Group -->
+                    <div class="step" id="step-muscle-group">
+                      <h6 class="mb-3">Step 1: Select Muscle Group</h6>
+                      <select class="form-select mb-3" id="muscle-group-select">
+                        <option value="">Choose a muscle group</option>
+                      </select>
+                    </div>
+
+                    <!-- Step 2: Exercise Selection -->
+                    <div class="step" id="exercise-cards-container">
+                      <!-- Exercise cards will be inserted here -->
+                    </div>
+
+                    <!-- Step 3: Exercise Details -->
+                    <div class="step d-none" id="exercise-details-form">
+                      <h6 class="mb-3">Step 3: Set Exercise Details</h6>
+                      <div class="row g-3">
+                        <div class="col-md-4">
+                          <label class="form-label">Weight (lbs)</label>
+                          <input
+                            name="weight"
+                            type="number"
+                            class="form-control"
+                            id="weight-input"
+                            min="0"
+                            step="5"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">Sets</label>
+                          <input
+                            name="sets"
+                            type="number"
+                            class="form-control"
+                            id="sets-input"
+                            min="1"
+                            max="10"
+                            value="4"
+                          />
+                        </div>
+                        <div class="col-md-4">
+                          <label class="form-label">Reps</label>
+                          <input
+                            name="reps"
+                            type="number"
+                            class="form-control"
+                            id="reps-input"
+                            min="1"
+                            max="20"
+                            value="8"
+                          />
+                        </div>
+                      </div>
+                      <div class="mt-3">
+                        <button
+                          type="button"
+                          class="btn btn-primary"
+                          id="add-to-plan-btn"
+                        >
+                          Add to Plan
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary ms-2"
+                          id="cancel-add-btn"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Form Actions -->
+              <div class="d-flex justify-content-between">
+                <a href="/" class="btn btn-outline-secondary">
+                  <i class="fas fa-arrow-left me-2"></i>Back
+                </a>
+                <button type="submit" class="btn btn-primary">
+                  <i class="fas fa-save me-2"></i>Create Plan
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="./js/createPlan.js"></script>
+  </body>
+</html>

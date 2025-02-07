@@ -33,7 +33,6 @@ let workoutPlans = [
 ];
 
 function createWorkoutCard(plan) {
-  console.log("Creating workout card for plan:", plan);
   return `
         <div class="col-md-6 col-lg-4 mb-4">
             <div class="card workout-card">

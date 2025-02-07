@@ -1,0 +1,18 @@
+.exercise-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.exercise-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+.exercise-card.selected {
+  border-color: #0d6efd;
+  background-color: #f8f9ff;
+}
+.exercise-selection-area {
+  display: none;
+}
+.exercise-selection-area.active {
+  display: block;
+}
