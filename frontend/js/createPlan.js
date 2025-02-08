@@ -1,35 +1,5 @@
-// Sample exercise data
-const exercises = [
-  {
-    name: "Bench Press",
-    muscleGroup: "Chest",
-    description:
-      "A compound exercise that primarily targets chest muscles, performed by lying on a bench and pushing weight upward.",
-  },
-  {
-    name: "Bench Press2",
-    muscleGroup: "Chest",
-    description:
-      "A compound exercise that primarily targets chest muscles, performed by lying on a bench and pushing weight upward.",
-  },
-  {
-    name: "Deadlift",
-    muscleGroup: "Back",
-    description:
-      "A compound exercise that works multiple muscle groups by lifting a loaded barbell from the ground to hip level.",
-  },
-  {
-    name: "Squats",
-    muscleGroup: "Legs",
-    description:
-      "A fundamental lower body exercise performed by bending the knees and hips to lower the body.",
-  },
-];
-
-// Get unique muscle groups from exercises
-const muscleGroups = [
-  ...new Set(exercises.map((exercise) => exercise.muscleGroup)),
-];
+// Hardcoded list of muscle groups
+const muscleGroups = ["Chest", "Back", "Legs", "Shoulders", "Arms", "Core"];
 
 // DOM Elements
 const addExerciseBtn = document.getElementById("add-exercise-btn");
@@ -73,14 +43,31 @@ function createExerciseCard(exercise) {
     `;
 }
 
+// request server for exercises data
+async function fetchExercises(muscleGroup) {
+  try {
+    const url = new URL("http://localhost:3000/api/exercises");
+
+    if (!muscleGroup) {
+      console.error("Muscle group not provided");
+    }
+    url.searchParams.append("muscleGroup", muscleGroup);
+
+    const response = await fetch(url);
+    const exercises = await response.json();
+
+    return exercises;
+  } catch (error) {
+    console.error("Error fetching exercises:", error);
+  }
+}
+
 // Display exercises for selected muscle group
-function displayExercises(muscleGroup) {
-  const filteredExercises = exercises.filter(
-    (ex) => ex.muscleGroup === muscleGroup,
-  );
+async function displayExercises(muscleGroup) {
+  const exercises = await fetchExercises(muscleGroup);
   exerciseCardsContainer.innerHTML = "";
 
-  filteredExercises.forEach((exercise) => {
+  exercises.forEach((exercise) => {
     exerciseCardsContainer.innerHTML += createExerciseCard(exercise);
   });
 
