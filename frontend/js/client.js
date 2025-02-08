@@ -62,7 +62,7 @@ function createWorkoutCard(plan) {
                                     ${exercise.weight}lbs × ${exercise.sets} sets × ${exercise.reps} reps
                                 </div>
                             </div>
-                        `,
+                            `,
                           )
                           .join("")}
                         <button class="btn btn-danger mt-3 delete-plan-btn" data-plan-id="${plan.id}">

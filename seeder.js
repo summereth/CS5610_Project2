@@ -1,14 +1,15 @@
+import { MongoClient } from "mongodb";
+import "dotenv/config";
 import { exercises } from "./data/exercises.js";
-import connectDB from "./connectDB.js";
 
 const dbName = "fitness_db";
 
 async function importData() {
-  let client;
+  const client = new MongoClient(process.env.MONGO_URI);
 
   try {
     // Connect to database
-    client = await connectDB();
+    await client.connect();
 
     // Get database and collection
     const db = client.db(dbName);
@@ -38,11 +39,11 @@ async function importData() {
 }
 
 async function destroyData() {
-  let client;
+  const client = new MongoClient(process.env.MONGO_URI);
 
   try {
     // Connect to database
-    client = await connectDB();
+    await client.connectDB();
 
     // Get database and collection
     const db = client.db(dbName);
