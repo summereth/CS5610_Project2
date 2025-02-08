@@ -12,3 +12,8 @@ Claude 3.5 Sonnet assisted me in finishing this project.
 
 Prompt:
 Generate a JS file containing data of exercises. The exercises is an array of exercise object. Each exercise object contains name, muscle group and description (some exercise tips).
+
+### Client request with query
+
+Prompt:
+How can client side send request with some query. Please give me an example.

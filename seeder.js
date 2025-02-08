@@ -2,8 +2,6 @@ import { MongoClient } from "mongodb";
 import "dotenv/config";
 import { exercises } from "./data/exercises.js";
 
-const dbName = "fitness_db";
-
 async function importData() {
   const client = new MongoClient(process.env.MONGO_URI);
 
@@ -12,7 +10,7 @@ async function importData() {
     await client.connect();
 
     // Get database and collection
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const collection = db.collection("exercises");
 
     // Delete existing data (optional)
@@ -46,7 +44,7 @@ async function destroyData() {
     await client.connectDB();
 
     // Get database and collection
-    const db = client.db(dbName);
+    const db = client.db(process.env.DB_NAME);
     const collection = db.collection("exercises");
 
     // Delete existing data
