@@ -51,16 +51,25 @@ async function createPlan(req, res) {
     res.status(400).send("Name and exercises are required");
     return;
   }
+  const convertedExercises = exercises.map((exercise) => ({
+    ...exercise,
+    weight: Number(exercise.weight),
+    sets: Number(exercise.sets),
+    reps: Number(exercise.reps),
+  }));
 
-  const exerciseCount = exercises.length;
-  const totalSets = exercises.reduce((acc, curr) => acc + curr.sets, 0);
-  const totalWeight = exercises.reduce(
+  const exerciseCount = convertedExercises.length;
+  const totalSets = convertedExercises.reduce(
+    (acc, curr) => acc + curr.sets,
+    0,
+  );
+  const totalWeight = convertedExercises.reduce(
     (acc, curr) => acc + curr.sets * curr.reps * curr.weight,
     0,
   );
   const newPlan = {
     name,
-    exercises,
+    exercises: convertedExercises,
     createdAt: new Date(),
     exerciseCount,
     totalSets,
