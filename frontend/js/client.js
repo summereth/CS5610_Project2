@@ -153,22 +153,26 @@ async function toggleCardDetails(planId) {
   }
 }
 
-function sortPlans(criteria, order) {
-  workoutPlans.sort((a, b) => {
-    let comparison = 0;
-    if (criteria === "name") {
-      comparison = a.title.localeCompare(b.title);
-    } else if (criteria === "date") {
-      comparison = new Date(a.createDate) - new Date(b.createDate);
-    }
-    return order === "asc" ? comparison : -comparison;
-  });
-  renderWorkoutPlans();
-}
-
-function deletePlan(planId) {
+async function deletePlan(planId) {
   if (confirm("Are you sure you want to delete this workout plan?")) {
-    workoutPlans = workoutPlans.filter((plan) => plan.id !== parseInt(planId));
+    try {
+      const response = await fetch(
+        `http://localhost:3000/api/plans/${planId}`,
+        {
+          method: "DELETE",
+        },
+      );
+
+      if (response.ok) {
+        alert("Workout plan deleted successfully");
+      } else {
+        alert("Failed to delete workout plan");
+      }
+    } catch (error) {
+      console.error("Error deleting workout plan:", error);
+      alert("Failed to delete workout plan");
+    }
+
     renderWorkoutPlans();
   }
 }
@@ -195,9 +199,9 @@ function initializeApp() {
   document.querySelectorAll(".sort-item").forEach((item) => {
     item.addEventListener("click", function (e) {
       e.preventDefault();
-      const criteria = this.dataset.sort;
-      const order = this.dataset.order;
-      sortPlans(criteria, order);
+      const sortBy = this.dataset.sort;
+      const sortOrder = this.dataset.order;
+      renderWorkoutPlans({ sortBy, sortOrder });
     });
   });
 
