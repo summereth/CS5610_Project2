@@ -33,7 +33,7 @@ function initializeMuscleGroups() {
 // Create exercise card HTML
 function createExerciseCard(exercise) {
   return `
-      <div class="card mb-3 exercise-card" data-exercise="${exercise.name}">
+      <div class="card mb-3 exercise-card" data-exercise-id="${exercise._id}">
         <div class="card-body">
           <h5 class="card-title">${exercise.name}</h5>
           <p class="card-text">${exercise.description}</p>
@@ -77,7 +77,7 @@ async function displayExercises(muscleGroup) {
       const card = e.target.closest(".exercise-card");
       card.classList.add("selected");
       selectedExercise = exercises.find(
-        (ex) => ex.name === card.dataset.exercise,
+        (ex) => ex._id === card.dataset.exerciseId,
       );
       exerciseDetailsForm.classList.remove("d-none");
       // Scroll to exercise details form
@@ -88,9 +88,8 @@ async function displayExercises(muscleGroup) {
 
 // Create selected exercise HTML
 function createSelectedExerciseHTML(exercise, details) {
-  const exerciseId = Date.now(); // Generate unique ID for the exercise
   return `
-      <div class="card mb-3 selected-exercise" data-exercise-id="${exerciseId}">
+      <div class="card mb-3 selected-exercise" data-exercise-id="${exercise._id}">
         <div class="card-body">
           <div class="d-flex justify-content-between align-items-start">
             <div>
@@ -98,10 +97,10 @@ function createSelectedExerciseHTML(exercise, details) {
               <p class="card-text mb-1">Weight: ${details.weight} lbs</p>
               <p class="card-text mb-1">Sets: ${details.sets}</p>
               <p class="card-text">Reps: ${details.reps}</p>
-              <input type="hidden" name="exercises[${exerciseId}][name]" value="${exercise.name}">
-              <input type="hidden" name="exercises[${exerciseId}][weight]" value="${details.weight}">
-              <input type="hidden" name="exercises[${exerciseId}][sets]" value="${details.sets}">
-              <input type="hidden" name="exercises[${exerciseId}][reps]" value="${details.reps}">
+              <input type="hidden" name="exercises[${exercise._id}][name]" value="${exercise.name}">
+              <input type="hidden" name="exercises[${exercise._id}][weight]" value="${details.weight}">
+              <input type="hidden" name="exercises[${exercise._id}][sets]" value="${details.sets}">
+              <input type="hidden" name="exercises[${exercise._id}][reps]" value="${details.reps}">
             </div>
             <button type="button" class="btn btn-danger btn-sm remove-exercise">
               <i class="fas fa-trash"></i>
@@ -190,7 +189,7 @@ cancelAddBtn.addEventListener("click", () => {
   resetExerciseSelection();
 });
 
-createPlanForm.addEventListener("submit", (e) => {
+createPlanForm.addEventListener("submit", async (e) => {
   e.preventDefault();
 
   const planName = document.getElementById("plan-name").value;
@@ -209,10 +208,9 @@ createPlanForm.addEventListener("submit", (e) => {
     name: planName,
     exercises: Array.from(selectedExercises).map((exerciseEl) => {
       const exerciseId = exerciseEl.dataset.exerciseId;
+      // console.log("exerciseId passed by front-end", exerciseId);
       return {
-        name: exerciseEl.querySelector(
-          `input[name="exercises[${exerciseId}][name]"]`,
-        ).value,
+        exerciseId,
         weight: exerciseEl.querySelector(
           `input[name="exercises[${exerciseId}][weight]"]`,
         ).value,
@@ -226,12 +224,27 @@ createPlanForm.addEventListener("submit", (e) => {
     }),
   };
 
-  console.log("Workout Plan Created:", workoutPlan);
-  // Here you would typically send the workout plan to your backend
+  // console.log("Workout Plan Created In Frontend", workoutPlan);
+  // send the workout plan to backend
+  try {
+    const response = await fetch("http://localhost:3000/api/plans/create", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(workoutPlan),
+    });
 
-  // Optional: Redirect to home page or show success message
-  alert("Workout plan created successfully!");
-  window.location.href = "/";
+    if (response.ok) {
+      alert("Workout plan created successfully!");
+      window.location.href = "/";
+    } else {
+      alert("Failed to create workout plan");
+    }
+  } catch (error) {
+    console.error("Error creating workout plan:", error);
+    alert("Failed to create workout plan");
+  }
 });
 
 // Initialize the page
