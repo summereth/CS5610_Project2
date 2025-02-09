@@ -39,10 +39,10 @@ async function findById(id) {
     const collection = db.collection(collection_name);
 
     // Find exercises
-    const exercises = await collection.findOne({
+    const exercise = await collection.findOne({
       _id: ObjectId.createFromHexString(id),
     });
-    return exercises;
+    return exercise;
   } catch (error) {
     console.error("Error getting exercise by ID:", error);
     throw error;

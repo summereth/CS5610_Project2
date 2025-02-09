@@ -18,12 +18,12 @@ async function getExercises(req, res) {
 }
 
 async function getExerciseById(req, res) {
-  console.log("Getting exercise by ID");
   try {
     const exercise = await findById(req.params.id);
     if (exercise) {
-      console.log(exercise);
       res.json(exercise);
+    } else {
+      res.status(404).send("Exercise not found");
     }
   } catch (error) {
     console.error("Error getting exercise by ID:", error);

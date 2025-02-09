@@ -24,3 +24,9 @@ Prompt:
 
 - I'm using MongoDB with Node.js driver. Without using mongoose, how can I query document by ObjectId.
 - How can I sort the query result.
+
+### Asynchronous programming issue with Array.map() function
+
+Prompt:
+
+Why my `convertedExercises` is an array of Promise. How should I modify the code so that I could get an array of exercise object

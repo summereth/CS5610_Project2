@@ -44,12 +44,12 @@ async function findById(id) {
     const collection = db.collection(collection_name);
 
     // Find exercises
-    const exercises = await collection.findOne({
+    const plan = await collection.findOne({
       _id: ObjectId.createFromHexString(id),
     });
-    return exercises;
+    return plan;
   } catch (error) {
-    console.error("Error getting exercise by ID:", error);
+    console.error("Error getting plan by ID:", error);
     throw error;
   } finally {
     // Close the connection
@@ -59,4 +59,30 @@ async function findById(id) {
   }
 }
 
-export { find, findById };
+async function insertOne(plan) {
+  const client = new MongoClient(process.env.MONGO_URI);
+
+  try {
+    // Connect to database
+    await client.connect();
+
+    // Get database and collection
+    const db = client.db(process.env.DB_NAME);
+    const collection = db.collection(collection_name);
+
+    // Insert plan
+    const result = await collection.insertOne(plan);
+    console.log("Result of insertion", result);
+    return result;
+  } catch (error) {
+    console.error("Error inserting plan:", error);
+    throw error;
+  } finally {
+    // Close the connection
+    if (client) {
+      await client.close();
+    }
+  }
+}
+
+export { find, findById, insertOne };
