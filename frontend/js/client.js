@@ -26,7 +26,8 @@ function createWorkoutCard(plan) {
 }
 
 function createDetailsContent(planDetails) {
-  return `
+  if (planDetails) {
+    return `
     <hr>
     <h6>Exercises:</h6>
     ${planDetails.exercises
@@ -41,10 +42,18 @@ function createDetailsContent(planDetails) {
       `,
       )
       .join("")}
-    <button class="btn btn-danger mt-3 delete-plan-btn" data-plan-id="${planDetails._id}">
+    <button class="btn btn-danger mt-3 delete-plan-btn">
       <i class="fas fa-trash me-2"></i>Delete Plan
     </button>
   `;
+  } else {
+    return `
+    <p>Error loading plan details</p>
+    <button class="btn btn-danger mt-3 delete-plan-btn">
+      <i class="fas fa-trash me-2"></i>Delete Plan
+    </button>
+  `;
+  }
 }
 
 async function fetchWorkoutPlans(sort) {
@@ -100,15 +109,6 @@ function attachCardEventListeners() {
       toggleCardDetails(planId);
     });
   });
-
-  // Add click listeners for delete buttons
-  document.querySelectorAll(".delete-plan-btn").forEach((button) => {
-    button.addEventListener("click", function (e) {
-      e.stopPropagation(); // Prevent card toggle
-      const planId = this.dataset.planId;
-      deletePlan(planId);
-    });
-  });
 }
 
 async function toggleCardDetails(planId) {
@@ -135,20 +135,14 @@ async function toggleCardDetails(planId) {
     // Fetch plan details
     const planDetails = await fetchPlanDetails(planId);
 
-    if (planDetails) {
-      // Render details and add delete button listener
-      detailsElement.innerHTML = createDetailsContent(planDetails);
-
-      // Add delete button listener
-      const deleteButton = detailsElement.querySelector(".delete-plan-btn");
-      if (deleteButton) {
-        deleteButton.addEventListener("click", function (e) {
-          e.stopPropagation(); // Prevent card toggle
-          deletePlan(planId);
-        });
-      }
-    } else {
-      detailsElement.innerHTML = "<p>Error loading plan details</p>";
+    // Render details and add delete button listener
+    detailsElement.innerHTML = createDetailsContent(planDetails);
+    const deleteButton = detailsElement.querySelector(".delete-plan-btn");
+    if (deleteButton) {
+      deleteButton.addEventListener("click", function (e) {
+        e.stopPropagation(); // Prevent card toggle
+        deletePlan(planId);
+      });
     }
   }
 }
