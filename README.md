@@ -30,3 +30,8 @@ Prompt:
 Prompt:
 
 Why my `convertedExercises` is an array of Promise. How should I modify the code so that I could get an array of exercise object
+
+### Lazy loading workout plans
+
+Prompt:
+Right now my frontend fetches workoutPlans from backend, and uses the data to insert html of both `card-header-section` and `card-details`. However, I wish to lazy load plan details. That is to say to display information in `card-details`​, front-end must request `GET /api/plans/:id`​. That means, in `createWorkoutCard()` function we can't insert Expandable Details part. And in `toggleCardDetails()` function, we need to send `GET /api/plans/:id​ `request and then inject `card-details`​ html. What are the key changes I need to make here.

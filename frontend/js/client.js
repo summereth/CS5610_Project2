@@ -182,7 +182,6 @@ function handleSubscribe(e) {
   const emailInput = e.target.querySelector("input");
   const email = emailInput.value;
 
-  // Here you can add your subscription logic
   console.log("Subscribe email:", email);
 
   // Clear the input and show success message
