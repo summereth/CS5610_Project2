@@ -1,11 +1,13 @@
 import express from "express";
-import { find, findById, insertOne } from "../db/plans.js";
+import { find, findById, insertOne, deleteOne } from "../db/plans.js";
 import { findById as findExerciseById } from "../db/exercises.js";
 
 const router = express.Router();
 router.get("/", getPlans);
-router.get("/:id", getPlanById);
+router.route("/:id").get(getPlanById).delete(deletePlan);
 router.post("/create", createPlan);
+// router.get("/:id", getPlanById);
+// router.delete("/:id", deletePlan);
 
 async function getPlans(req, res) {
   const sortBy = req.query.sortBy || "createdAt";
@@ -72,6 +74,21 @@ async function createPlan(req, res) {
   } catch (error) {
     console.error("Error creating plan:", error);
     res.status(500).send("Error creating plan");
+  }
+}
+
+async function deletePlan(req, res) {
+  try {
+    const result = await deleteOne(req.params.id);
+    if (result.deletedCount) {
+      res.json(result);
+      res.status(204);
+    } else {
+      res.status(404).send("Plan not found");
+    }
+  } catch (error) {
+    console.error("Error deleting plan:", error);
+    res.status(500).send("Error deleting plan");
   }
 }
 

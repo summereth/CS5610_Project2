@@ -43,7 +43,7 @@ async function findById(id) {
     const db = client.db(process.env.DB_NAME);
     const collection = db.collection(collection_name);
 
-    // Find exercises
+    // Find the plan by ID
     const plan = await collection.findOne({
       _id: ObjectId.createFromHexString(id),
     });
@@ -72,7 +72,6 @@ async function insertOne(plan) {
 
     // Insert plan
     const result = await collection.insertOne(plan);
-    console.log("Result of insertion", result);
     return result;
   } catch (error) {
     console.error("Error inserting plan:", error);
@@ -85,4 +84,31 @@ async function insertOne(plan) {
   }
 }
 
-export { find, findById, insertOne };
+async function deleteOne(id) {
+  const client = new MongoClient(process.env.MONGO_URI);
+
+  try {
+    // Connect to database
+    await client.connect();
+
+    // Get database and collection
+    const db = client.db(process.env.DB_NAME);
+    const collection = db.collection(collection_name);
+
+    // Delete plan
+    const result = await collection.deleteOne({
+      _id: ObjectId.createFromHexString(id),
+    });
+    return result;
+  } catch (error) {
+    console.error("Error deleting plan by ID:", error);
+    throw error;
+  } finally {
+    // Close the connection
+    if (client) {
+      await client.close();
+    }
+  }
+}
+
+export { find, findById, insertOne, deleteOne };
