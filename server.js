@@ -3,6 +3,11 @@ import "dotenv/config";
 import cookieParser from "cookie-parser";
 import exerciseRoutes from "./routes/exerciseRoutes.js";
 import planRoutes from "./routes/planRoutes.js";
+// import path from "path";
+// import { fileURLToPath } from "url";
+
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 3000;
 const app = express();
@@ -19,3 +24,10 @@ app.use("/api/plans", planRoutes);
 app.listen(PORT, () => {
   console.log("Server is running on port " + PORT);
 });
+
+// this catch-all route at the end will ensure that any request that doesn't match one of the above routes will return the index.html file.
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "frontend", "index.html"));
+// });
+
+// export default app;

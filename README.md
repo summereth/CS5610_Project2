@@ -40,3 +40,20 @@ Right now my frontend fetches workoutPlans from backend, and uses the data to in
 
 Prompt:
 How to send POST request to backend with a body using just vanilla JavaScript
+
+### Vercel Deploy Issue
+
+Prompt:
+
+- Analyze this error:
+  file:///Users/liqian/.nvm/versions/node/v20.12.2/lib/node_modules/vercel/node_modules/@vercel/node/dist/dev-server.mjs:1952
+  return listener(req, res);
+  ^
+  TypeError: listener is not a function
+  at Server.<anonymous> (file:///Users/liqian/.nvm/versions/node/v20.12.2/lib/node_modules/vercel/node_modules/@vercel/node/dist/dev-server.mjs:1952:12)
+  at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+  Node.js v20.12.2
+
+- The deploy in dev is good. So I deployed it in production by running `vercel`. However, when I open the production url, there is an error in console:
+  fitnessmaster-p7tr3bgl6-summers-projects-06a1372b.vercel.app/:1
+  Failed to load resource: the server responded with a status of 404 ()
