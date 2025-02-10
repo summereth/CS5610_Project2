@@ -57,3 +57,8 @@ Prompt:
 - The deploy in dev is good. So I deployed it in production by running `vercel`. However, when I open the production url, there is an error in console:
   fitnessmaster-p7tr3bgl6-summers-projects-06a1372b.vercel.app/:1
   Failed to load resource: the server responded with a status of 404 ()
+
+### Dynamically fetch baseURL from front-end
+
+Prompt:
+Currently my frontend is requesting backend via `fetch("http://localhost:3000/api/plans")`. The url is hardcoded. However, my application may run in another port. How should I modify the code

@@ -1,3 +1,7 @@
+import getApiBaseUrl from "./getApiBaseUrl.js";
+
+const baseUrl = getApiBaseUrl();
+
 function createWorkoutCard(plan) {
   return `
         <div class="col-md-6 col-lg-4 mb-4">
@@ -58,7 +62,7 @@ function createDetailsContent(planDetails) {
 
 async function fetchWorkoutPlans(sort) {
   try {
-    const url = new URL("http://localhost:3000/api/plans");
+    const url = new URL(`${baseUrl}/plans`);
 
     if (sort) {
       url.searchParams.append("sortBy", sort.sortBy);
@@ -78,7 +82,7 @@ async function fetchWorkoutPlans(sort) {
 
 async function fetchPlanDetails(planId) {
   try {
-    const response = await fetch(`http://localhost:3000/api/plans/${planId}`);
+    const response = await fetch(`${baseUrl}/plans/${planId}`);
     if (!response.ok) {
       throw new Error("Failed to fetch plan details");
     }
@@ -150,12 +154,9 @@ async function toggleCardDetails(planId) {
 async function deletePlan(planId) {
   if (confirm("Are you sure you want to delete this workout plan?")) {
     try {
-      const response = await fetch(
-        `http://localhost:3000/api/plans/${planId}`,
-        {
-          method: "DELETE",
-        },
-      );
+      const response = await fetch(`${baseUrl}/plans/${planId}`, {
+        method: "DELETE",
+      });
 
       if (response.ok) {
         alert("Workout plan deleted successfully");

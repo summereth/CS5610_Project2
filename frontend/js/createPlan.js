@@ -1,3 +1,7 @@
+import getApiBaseUrl from "./getApiBaseUrl.js";
+
+const baseUrl = getApiBaseUrl();
+
 // Hardcoded list of muscle groups
 const muscleGroups = ["Chest", "Back", "Legs", "Shoulders", "Arms", "Core"];
 
@@ -46,7 +50,7 @@ function createExerciseCard(exercise) {
 // request server for exercises data
 async function fetchExercises(muscleGroup) {
   try {
-    const url = new URL("http://localhost:3000/api/exercises");
+    const url = new URL(`${baseUrl}/exercises`);
 
     if (!muscleGroup) {
       console.error("Muscle group not provided");
@@ -227,7 +231,7 @@ createPlanForm.addEventListener("submit", async (e) => {
   // console.log("Workout Plan Created In Frontend", workoutPlan);
   // send the workout plan to backend
   try {
-    const response = await fetch("http://localhost:3000/api/plans/create", {
+    const response = await fetch(`${baseUrl}/plans/create`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
