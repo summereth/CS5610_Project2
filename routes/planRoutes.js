@@ -1,13 +1,17 @@
 import express from "express";
-import { find, findById, insertOne, deleteOne } from "../db/plans.js";
+import {
+  find,
+  findById,
+  insertOne,
+  deleteOne,
+  updatePlanName,
+} from "../db/plans.js";
 import { findById as findExerciseById } from "../db/exercises.js";
 
 const router = express.Router();
 router.get("/", getPlans);
-router.route("/:id").get(getPlanById).delete(deletePlan);
+router.route("/:id").get(getPlanById).delete(deletePlan).post(updatePlan);
 router.post("/create", createPlan);
-// router.get("/:id", getPlanById);
-// router.delete("/:id", deletePlan);
 
 async function getPlans(req, res) {
   const sortBy = req.query.sortBy || "createdAt";
@@ -98,6 +102,22 @@ async function deletePlan(req, res) {
   } catch (error) {
     console.error("Error deleting plan:", error);
     res.status(500).send("Error deleting plan");
+  }
+}
+
+async function updatePlan(req, res) {
+  const { name } = req.body;
+  if (!name) {
+    res.status(400).send("Name and exercises are required");
+    return;
+  }
+
+  try {
+    const result = await updatePlanName(req.params.id, name);
+    res.json(result);
+  } catch (error) {
+    console.error("Error updating plan:", error);
+    res.status(500).send("Error updating plan");
   }
 }
 

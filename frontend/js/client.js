@@ -49,6 +49,40 @@ function createDetailsContent(planDetails) {
     <button class="btn btn-danger mt-3 delete-plan-btn">
       <i class="fas fa-trash me-2"></i>Delete Plan
     </button>
+    <button class="btn mt-3 btn-outline-primary edit-name-btn">
+        <i class="fas fa-edit me-2"></i>Edit Name
+    </button>
+
+    <!-- Simple Modal for Edit Name -->
+    <div class="edit-name-modal d-none" id="editNameModal-${planDetails._id}">
+      <div class="modal-overlay"></div>
+      <div class="modal-content">
+        <div class="card">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">Edit Plan Name</h5>
+            <button type="button" class="btn-close close-modal"></button>
+          </div>
+          <div class="card-body">
+            <form id="editNameForm-${planDetails._id}">
+              <div class="mb-3">
+                <label for="newPlanName-${planDetails._id}" class="form-label">New Plan Name</label>
+                <input 
+                  type="text" 
+                  class="form-control" 
+                  id="newPlanName-${planDetails._id}" 
+                  value="${planDetails.name}"
+                  required
+                >
+              </div>
+              <div class="text-end">
+                <button type="button" class="btn btn-secondary me-2 close-modal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   `;
   } else {
     return `
@@ -90,6 +124,27 @@ async function fetchPlanDetails(planId) {
   } catch (error) {
     console.error("Error fetching plan details:", error);
     return null;
+  }
+}
+
+async function updatePlanName(planId, newName) {
+  try {
+    const response = await fetch(`${baseUrl}/plans/${planId}`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name: newName }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Failed to update plan name");
+    }
+
+    return await response.json();
+  } catch (error) {
+    console.error("Error updating plan name:", error);
+    throw error;
   }
 }
 
@@ -139,13 +194,68 @@ async function toggleCardDetails(planId) {
     // Fetch plan details
     const planDetails = await fetchPlanDetails(planId);
 
-    // Render details and add delete button listener
+    // Render details
     detailsElement.innerHTML = createDetailsContent(planDetails);
+
+    // Add delete button listener
     const deleteButton = detailsElement.querySelector(".delete-plan-btn");
     if (deleteButton) {
       deleteButton.addEventListener("click", function (e) {
         e.stopPropagation(); // Prevent card toggle
         deletePlan(planId);
+      });
+    }
+
+    // Add edit name button listener
+    const editButton = detailsElement.querySelector(".edit-name-btn");
+    const editModal = document.getElementById(`editNameModal-${planId}`);
+
+    if (editButton && editModal) {
+      // Show modal
+      editButton.addEventListener("click", function (e) {
+        e.stopPropagation(); // Prevent card toggle
+        editModal.classList.remove("d-none");
+      });
+
+      // Hide modal
+      const closeButtons = editModal.querySelectorAll(".close-modal");
+      closeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+          editModal.classList.add("d-none");
+        });
+      });
+
+      // Close modal when clicking overlay
+      const overlay = editModal.querySelector(".modal-overlay");
+      overlay.addEventListener("click", () => {
+        editModal.classList.add("d-none");
+      });
+    }
+
+    // Add form submission listener
+    const editForm = document.getElementById(`editNameForm-${planId}`);
+    if (editForm) {
+      editForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+        const newName = document
+          .getElementById(`newPlanName-${planId}`)
+          .value.trim();
+
+        if (newName) {
+          try {
+            await updatePlanName(planId, newName);
+            // Close the modal
+            document
+              .getElementById(`editNameModal-${planId}`)
+              .classList.add("d-none");
+            // Refresh the workout plans to show the updated name
+            renderWorkoutPlans();
+            alert("Plan name updated successfully!");
+          } catch (error) {
+            console.log("Error updating plan name:", error);
+            alert("Failed to update plan name. Please try again.");
+          }
+        }
       });
     }
   }
