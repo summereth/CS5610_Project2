@@ -1,17 +1,22 @@
 import { MongoClient, ObjectId } from "mongodb";
 
-const collection_name = "plans";
+function getClientAndCollection() {
+  const collection_name = "plans";
+  const mongo_uri = process.env.MONGO_URI || "mongodb://localhost:27017";
+
+  const client = new MongoClient(mongo_uri);
+  const db = client.db(process.env.DB_NAME);
+  const collection = db.collection(collection_name);
+
+  return { client, collection };
+}
 
 async function find(sort = {}) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Find plans
     const plans = await collection
@@ -33,15 +38,11 @@ async function find(sort = {}) {
 }
 
 async function findById(id) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Find the plan by ID
     const plan = await collection.findOne({
@@ -60,15 +61,11 @@ async function findById(id) {
 }
 
 async function insertOne(plan) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Insert plan
     const result = await collection.insertOne(plan);
@@ -85,15 +82,11 @@ async function insertOne(plan) {
 }
 
 async function deleteOne(id) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Delete plan
     const result = await collection.deleteOne({
@@ -112,15 +105,11 @@ async function deleteOne(id) {
 }
 
 async function updatePlanName(id, newPlanName) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Update plan
     const result = await collection.updateOne(

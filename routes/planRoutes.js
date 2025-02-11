@@ -9,9 +9,6 @@ import {
 import { findById as findExerciseById } from "../db/exercises.js";
 
 const router = express.Router();
-router.get("/", getPlans);
-router.route("/:id").get(getPlanById).delete(deletePlan).post(updatePlan);
-router.post("/create", createPlan);
 
 async function getPlans(req, res) {
   const sortBy = req.query.sortBy || "createdAt";
@@ -120,5 +117,9 @@ async function updatePlan(req, res) {
     res.status(500).send("Error updating plan");
   }
 }
+
+router.get("/", getPlans);
+router.route("/:id").get(getPlanById).delete(deletePlan).post(updatePlan);
+router.post("/create", createPlan);
 
 export default router;

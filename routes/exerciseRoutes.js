@@ -1,10 +1,6 @@
 import express from "express";
 import { find, findById } from "../db/exercises.js";
 
-const router = express.Router();
-router.get("/", getExercises);
-router.get("/:id", getExerciseById);
-
 async function getExercises(req, res) {
   const muscleGroup = req.query.muscleGroup;
   const query = muscleGroup ? { muscleGroup } : {};
@@ -30,5 +26,9 @@ async function getExerciseById(req, res) {
     res.status(500).send("Error getting exercise by ID");
   }
 }
+
+const router = express.Router();
+router.get("/", getExercises);
+router.get("/:id", getExerciseById);
 
 export default router;

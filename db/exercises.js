@@ -1,17 +1,22 @@
 import { MongoClient, ObjectId } from "mongodb";
 
-const collection_name = "exercises";
+function getClientAndCollection() {
+  const collection_name = "exercises";
+  const mongo_uri = process.env.MONGO_URI || "mongodb://localhost:27017";
+
+  const client = new MongoClient(mongo_uri);
+  const db = client.db(process.env.DB_NAME);
+  const collection = db.collection(collection_name);
+
+  return { client, collection };
+}
 
 async function find(query = {}) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Find exercises
     const exercises = await collection.find(query).toArray();
@@ -28,15 +33,11 @@ async function find(query = {}) {
 }
 
 async function findById(id) {
-  const client = new MongoClient(process.env.MONGO_URI);
+  const { client, collection } = getClientAndCollection();
 
   try {
     // Connect to database
     await client.connect();
-
-    // Get database and collection
-    const db = client.db(process.env.DB_NAME);
-    const collection = db.collection(collection_name);
 
     // Find exercises
     const exercise = await collection.findOne({

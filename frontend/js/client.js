@@ -210,8 +210,7 @@ async function toggleCardDetails(planId) {
   // If the clicked card wasn't shown before, fetch and show its details
   if (!isCurrentlyShown) {
     // Show loading state
-    detailsElement.innerHTML =
-      '<div class="text-center"><div class="spinner-border" role="status"></div></div>';
+    detailsElement.innerHTML = `<div class="text-center"><div class="spinner-border" role="status"></div></div>`;
     detailsElement.classList.add("show");
 
     // Fetch plan details
