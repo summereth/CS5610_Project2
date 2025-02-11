@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 import "dotenv/config";
-import { exercises } from "./data/exercises.js";
+import { exercises } from "../data/exercises.js";
 
 async function importData() {
   const client = new MongoClient(process.env.MONGO_URI);
