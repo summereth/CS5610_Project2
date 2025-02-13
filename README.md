@@ -78,7 +78,7 @@ Then run `npm run plandata:import <-row_number_you_wish_to_seed->`. For example,
 ## Other documents
 
 - [Google Slides](https://docs.google.com/presentation/d/1yN8TeCEl2tfzsiCDjfl2GAH-x4VFpQGGOiyhTQ7MJr0/edit?usp=sharing)
-- [Video Walkthrough]()
+- [Video Walkthrough](https://youtu.be/pyLXtfUEJ10)
 - [Design_Document](./design_doc.md)
 
 ## GenAI usage
