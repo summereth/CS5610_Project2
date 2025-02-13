@@ -119,7 +119,7 @@ async function updatePlan(req, res) {
 }
 
 router.get("/", getPlans);
-router.route("/:id").get(getPlanById).delete(deletePlan).post(updatePlan);
 router.post("/create", createPlan);
+router.route("/:id").get(getPlanById).delete(deletePlan).post(updatePlan);
 
 export default router;
